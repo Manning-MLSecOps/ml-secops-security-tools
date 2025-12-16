@@ -28,7 +28,17 @@ def main() -> None:
     Entry point for the secure_config_checker CLI.
     """
     args = parse_args()
-    config = load_and_validate_config(args.config)
-    
-    print("\nFinal validated config object:")
-    print(config)
+
+    try:
+        config = load_and_validate_config(args.config)
+        print("SECURITY POLICY PASSED: Pipeline config is compliant.")
+        # Optional: print(config) for debugging, but usually remove in CI
+        # print(config)
+        import sys
+        sys.exit(0)
+
+    except Exception as e:
+        print("SECURITY POLICY FAILED: Pipeline config is NOT compliant!")
+        print(f"Reason: {e}")
+        import sys
+        sys.exit(1)
