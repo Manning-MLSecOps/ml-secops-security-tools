@@ -42,14 +42,21 @@ def load_and_validate_config(path: str) -> PipelineConfig:
         config = PipelineConfig(**raw_data)
         logging.info("Config validation SUCCESS")
         
+        # Security Policy Enforcement
+        if not config.enable_encryption:
+            raise ValueError(
+                "Security Policy Violation: 'enable_encryption' must be True."
+                "(HIPPA / HITRUST baseline requirement)"
+            )
+        
         # Compute and log SHA-256 hash
         file_hash = compute_hash(path)
         logging.info(f"SHA-256 hash of config file: {file_hash}")
         
         return config
       
-    except ValidationError as e:
+    except (ValidationError, ValueError) as e:
         logging.error("Config validation FAILED!!!")
-        print(e.json(indent=2))
+        print(str(e))
         sys.exit(1)
   
