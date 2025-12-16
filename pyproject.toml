@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "secure_config_checker"
+version = "0.1.0"
+description = "CLI tool to validate ML pipeline configuration files securely."
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2,<3",
+]
+
+[project.scripts]
+secure-config-checker = "secure_config_checker.cli:main"
